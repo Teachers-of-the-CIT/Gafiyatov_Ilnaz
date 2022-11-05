@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DemoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="order_id" />
+    </Key>
+    <Property Name="order_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="order_elements" Type="nvarchar" MaxLength="300" />
+    <Property Name="order_start_date" Type="date" />
+    <Property Name="order_delivery_date" Type="date" />
+    <Property Name="point_id" Type="int" />
+    <Property Name="order_user_fullname" Type="nvarchar" MaxLength="200" />
+    <Property Name="order_code" Type="int" />
+    <Property Name="order_status" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Point">
+    <Key>
+      <PropertyRef Name="point_id" />
+    </Key>
+    <Property Name="point_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="point_address" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="product_id" />
+    </Key>
+    <Property Name="product_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="product_articule" Type="nvarchar" MaxLength="20" />
+    <Property Name="product_name" Type="nvarchar" MaxLength="100" />
+    <Property Name="product_unit" Type="nvarchar" MaxLength="10" />
+    <Property Name="product_price" Type="int" />
+    <Property Name="product_max_discount" Type="int" />
+    <Property Name="product_maker" Type="nvarchar" MaxLength="100" />
+    <Property Name="product_provider" Type="nvarchar" MaxLength="100" />
+    <Property Name="product_category" Type="nvarchar" MaxLength="100" />
+    <Property Name="product_discount" Type="int" />
+    <Property Name="product_count" Type="int" />
+    <Property Name="product_description" Type="nvarchar" MaxLength="200" />
+    <Property Name="product_img_url" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_role" Type="nvarchar" MaxLength="100" />
+    <Property Name="user_fullname" Type="nvarchar" MaxLength="200" />
+    <Property Name="user_login" Type="nvarchar" MaxLength="100" />
+    <Property Name="user_password" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <Association Name="FK_Order_Point1">
+    <End Role="Point" Type="Self.Point" Multiplicity="0..1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Point">
+        <PropertyRef Name="point_id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="point_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DemoModelStoreContainer">
+    <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Point" EntityType="Self.Point" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Order_Point1" Association="Self.FK_Order_Point1">
+      <End Role="Point" EntitySet="Point" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
