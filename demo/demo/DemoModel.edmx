@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DemoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="order_elements" Type="nvarchar" MaxLength="300" />
+          <Property Name="order_start_date" Type="date" />
+          <Property Name="order_delivery_date" Type="date" />
+          <Property Name="point_id" Type="int" />
+          <Property Name="order_user_fullname" Type="nvarchar" MaxLength="200" />
+          <Property Name="order_code" Type="int" />
+          <Property Name="order_status" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Point">
+          <Key>
+            <PropertyRef Name="point_id" />
+          </Key>
+          <Property Name="point_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="point_address" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_articule" Type="nvarchar" MaxLength="20" />
+          <Property Name="product_name" Type="nvarchar" MaxLength="100" />
+          <Property Name="product_unit" Type="nvarchar" MaxLength="10" />
+          <Property Name="product_price" Type="int" />
+          <Property Name="product_max_discount" Type="int" />
+          <Property Name="product_maker" Type="nvarchar" MaxLength="100" />
+          <Property Name="product_provider" Type="nvarchar" MaxLength="100" />
+          <Property Name="product_category" Type="nvarchar" MaxLength="100" />
+          <Property Name="product_discount" Type="int" />
+          <Property Name="product_count" Type="int" />
+          <Property Name="product_description" Type="nvarchar" MaxLength="200" />
+          <Property Name="product_img_url" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_role" Type="nvarchar" MaxLength="100" />
+          <Property Name="user_fullname" Type="nvarchar" MaxLength="200" />
+          <Property Name="user_login" Type="nvarchar" MaxLength="100" />
+          <Property Name="user_password" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK_Order_Point1">
+          <End Role="Point" Type="Self.Point" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Point">
+              <PropertyRef Name="point_id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="point_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DemoModelStoreContainer">
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Point" EntityType="Self.Point" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Order_Point1" Association="Self.FK_Order_Point1">
+            <End Role="Point" EntitySet="Point" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DemoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="order_elements" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="order_start_date" Type="DateTime" Precision="0" />
+          <Property Name="order_delivery_date" Type="DateTime" Precision="0" />
+          <Property Name="point_id" Type="Int32" />
+          <Property Name="order_user_fullname" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="order_code" Type="Int32" />
+          <Property Name="order_status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Point" Relationship="Self.FK_Order_Point1" FromRole="Order" ToRole="Point" />
+        </EntityType>
+        <EntityType Name="Point">
+          <Key>
+            <PropertyRef Name="point_id" />
+          </Key>
+          <Property Name="point_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="point_address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Point1" FromRole="Point" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_articule" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="product_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="product_unit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="product_price" Type="Int32" />
+          <Property Name="product_max_discount" Type="Int32" />
+          <Property Name="product_maker" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="product_provider" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="product_category" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="product_discount" Type="Int32" />
+          <Property Name="product_count" Type="Int32" />
+          <Property Name="product_description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="product_img_url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_role" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="user_fullname" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="user_login" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="user_password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Order_Point1">
+          <End Role="Point" Type="Self.Point" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Point">
+              <PropertyRef Name="point_id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="point_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DemoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Points" EntityType="Self.Point" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Order_Point1" Association="Self.FK_Order_Point1">
+            <End Role="Point" EntitySet="Points" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DemoModelStoreContainer" CdmEntityContainer="DemoEntities">
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="DemoModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="order_elements" ColumnName="order_elements" />
+                <ScalarProperty Name="order_start_date" ColumnName="order_start_date" />
+                <ScalarProperty Name="order_delivery_date" ColumnName="order_delivery_date" />
+                <ScalarProperty Name="point_id" ColumnName="point_id" />
+                <ScalarProperty Name="order_user_fullname" ColumnName="order_user_fullname" />
+                <ScalarProperty Name="order_code" ColumnName="order_code" />
+                <ScalarProperty Name="order_status" ColumnName="order_status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Points">
+            <EntityTypeMapping TypeName="DemoModel.Point">
+              <MappingFragment StoreEntitySet="Point">
+                <ScalarProperty Name="point_id" ColumnName="point_id" />
+                <ScalarProperty Name="point_address" ColumnName="point_address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="DemoModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="product_articule" ColumnName="product_articule" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="product_unit" ColumnName="product_unit" />
+                <ScalarProperty Name="product_price" ColumnName="product_price" />
+                <ScalarProperty Name="product_max_discount" ColumnName="product_max_discount" />
+                <ScalarProperty Name="product_maker" ColumnName="product_maker" />
+                <ScalarProperty Name="product_provider" ColumnName="product_provider" />
+                <ScalarProperty Name="product_category" ColumnName="product_category" />
+                <ScalarProperty Name="product_discount" ColumnName="product_discount" />
+                <ScalarProperty Name="product_count" ColumnName="product_count" />
+                <ScalarProperty Name="product_description" ColumnName="product_description" />
+                <ScalarProperty Name="product_img_url" ColumnName="product_img_url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DemoModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_role" ColumnName="user_role" />
+                <ScalarProperty Name="user_fullname" ColumnName="user_fullname" />
+                <ScalarProperty Name="user_login" ColumnName="user_login" />
+                <ScalarProperty Name="user_password" ColumnName="user_password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
